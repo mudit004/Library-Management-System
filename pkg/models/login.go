@@ -38,12 +38,6 @@ func Login(username, password string) (verify bool, token string, isAdmin bool) 
 
 		if check {
 			token := utils.NewJWT(user)
-			// Cookie := http.Cookie{
-			// 	Name:    "access-token",
-			// 	Value:   token,
-			// 	Expires: time.Now().Add(48 * time.Hour),
-			// 	Path:    "/",
-			// }
 			var isAdmin bool
 			if user.Admin == 1 {
 				isAdmin = true
@@ -55,13 +49,6 @@ func Login(username, password string) (verify bool, token string, isAdmin bool) 
 			fmt.Println("Wrong Password")
 			return false, "", false
 		}
-
-		// http.SetCookie(w, &cookie)
-		// if isAdmin {
-		// 	http.Redirect(w, r, "/adminDashboard", http.StatusSeeOther)
-		// } else {
-		// 	http.Redirect(w, r, "/userDashboard", http.StatusSeeOther)
-		// }
 
 	}
 

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Requests</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+    <link href="AdminPortal.css" rel="stylesheet" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary nav-fill">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">LMS</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="collapse navbar-collapse justify-content-end"
+          id="navbarNav"
+        >
+          <ul class="nav justify-content-end">
+            <li class="nav-item">
+              <a
+                class="nav-link active me-5 border border-black"
+                aria-current="page"
+                href="/addBook"
+                >AddBook</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link active me-5 border border-black"
+                href="/requestManagement"
+                >Request Management</a
+              >
+            </li>
+            <li class="nav-item">
+              <form id="myform" method="post" action="/logout"></form>
+              <a
+                class="nav-link active me-5 border border-black"
+                href="#"
+                onclick="document.getElementById('myform').submit();"
+                >Logout</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container text-center mt-5">
+      <h1 class="mb-4">Request Management</h1>
+    </div>
+    <div class="container mt-5">
+      <div class="row justify-content-between">
+        <div class="col-md-2">
+          <div class="card shadow">
+            <div class="card-body">
+              <h5 class="card-title">Total Books</h5>
+              <p class="card-text">{{ .TotalBooks }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="card shadow">
+            <div class="card-body">
+              <h5 class="card-title">Different Books</h5>
+              <p class="card-text">{{ .DiffBook }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="card shadow">
+            <div class="card-body">
+              <h5 class="card-title">Issued Book</h5>
+              <p class="card-text">{{ .IssuedBook }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="card shadow">
+            <div class="card-body">
+              <h5 class="card-title">Total Users</h5>
+              <p class="card-text">{{ .TotalUsers }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <table class="table table-striped table-dark">
+            <thead>
+              <tr>
+                <th scope="col">Request ID</th>
+                <th scope="col">User ID</th>
+                <th scope="col">Book ID</th>
+                <th scope="col">Book Name</th>
+                <th scope="col">Status</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{ range .Requests}}
+              <tr>
+                <td scope="row">{{ .RequestID }}</td>
+                <td>{{ .UserID }}</td>
+                <td>{{ .BookID }}</td>
+                <td>{{ .BookName }}</td>
+                <td>{{ .Status }}</td>
+                <td>
+                  <form action="/dashboard" method="post">
+                    <div class="form-group">
+                      <input
+                        type="hidden"
+                        class="form-control"
+                        name="requestUID"
+                        value="{{ .UserID }}"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <input
+                        type="hidden"
+                        class="form-control"
+                        name="requestBID"
+                        value="{{ .BookID }}"
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      class="btn btn-outline-light"
+                      formaction="/admin/rejectReq"
+                    >
+                      Reject
+                    </button>
+                    <button
+                      type="submit"
+                      class="btn btn-outline-light"
+                      formaction="/admin/acceptReq"
+                    >
+                      Accept
+                    </button>
+                  </form>
+                </td>
+              </tr>
+              {{end}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

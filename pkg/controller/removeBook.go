@@ -6,21 +6,21 @@ import (
 	"net/http"
 )
 
-func RemBookHandler(w http.ResponseWriter, r *http.Request) {
+func RemoveBookHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
 
 		// Extract form values
 		name := r.FormValue("bookname")
-
+		fmt.Println(name)
 		resp := models.RemBook(name)
-
+		fmt.Println(resp)
 		if resp != "" {
 			fmt.Println((resp))
-			http.Error(w, "Failed to add book", http.StatusInternalServerError)
+			http.Error(w, "Failed to remove book", http.StatusInternalServerError)
 			return
 		}
 
-		http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+		http.Redirect(w, r, "/addBook", http.StatusSeeOther)
 		return
 	}
 }

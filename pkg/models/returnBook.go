@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func BookIssued(db *sql.DB, UID, BID int) (bool, error) {
+func BookIssued(db *sql.DB, UID interface{}, BID int) (bool, error) {
 	query := "SELECT COUNT(*) FROM request WHERE UID=? and BookID=? and status=1"
 	var count int
 	err := db.QueryRow(query, UID, BID).Scan(&count)
@@ -15,7 +15,7 @@ func BookIssued(db *sql.DB, UID, BID int) (bool, error) {
 	return count > 0, nil
 }
 
-func ReturnBook(UID, BID int) string {
+func ReturnBook(UID interface{}, BID int) string {
 	db, err := Connection()
 
 	if err != nil {
@@ -25,9 +25,9 @@ func ReturnBook(UID, BID int) string {
 	defer db.Close()
 
 	status, _ := BookIssued(db, UID, BID)
-
+	fmt.Println(status)
 	if status {
-		_, err = db.Exec("Update requeat set status = 3 where UID =? and BookID = ?", UID, BID)
+		_, err = db.Exec("Update request set status = 2 where UID =? and BookID = ?", UID, BID)
 		if err != nil {
 			panic(err)
 		}

@@ -21,7 +21,7 @@ func RejectRequestHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+		http.Redirect(w, r, "/requestManagement", http.StatusSeeOther)
 		return
 	}
 

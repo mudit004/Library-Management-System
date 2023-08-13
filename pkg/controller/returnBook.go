@@ -19,14 +19,15 @@ func ReturnBookHandler(w http.ResponseWriter, r *http.Request) {
 		} else {
 			token := cookie.Value
 			claims, err := utils.DecodeJWT(token)
+			fmt.Println(claims)
 			if err != nil {
 				fmt.Println("Error in decoding")
 			} else {
-				resp := models.ReturnBook(claims["UID"].(int), BIDint)
+				resp := models.ReturnBook(claims["UID"], BIDint)
 				if resp != "" {
 					fmt.Println(resp)
 				}
-				http.Redirect(w, r, "/browse", http.StatusSeeOther)
+				http.Redirect(w, r, "/requestBook", http.StatusSeeOther)
 				return
 
 			}

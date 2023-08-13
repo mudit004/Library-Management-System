@@ -17,11 +17,12 @@ func AddBookHandler(w http.ResponseWriter, r *http.Request) {
 		resp := models.AddBook(name, quantity)
 		if resp != "" {
 			fmt.Println((resp))
-			http.Error(w, "Failed to add book", http.StatusInternalServerError)
+			// http.Error(w, "Failed to add book", http.StatusInternalServerError)
+			http.Redirect(w, r, "/addBook", http.StatusSeeOther)
 			return
 		}
 
-		http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+		http.Redirect(w, r, "/addBook", http.StatusSeeOther)
 		return
 	}
 }

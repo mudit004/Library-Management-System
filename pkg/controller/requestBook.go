@@ -22,11 +22,11 @@ func RequestBookHandler(w http.ResponseWriter, r *http.Request) {
 			if err != nil {
 				fmt.Println("Error in decoding")
 			} else {
-				resp := models.RequestBook(claims["UID"].(int), BIDint)
+				resp := models.RequestBook(claims["UID"], BIDint)
 				if resp != "" {
 					fmt.Println(resp)
 				}
-				http.Redirect(w, r, "/browse", http.StatusSeeOther)
+				http.Redirect(w, r, "/requestBook", http.StatusSeeOther)
 				return
 
 			}

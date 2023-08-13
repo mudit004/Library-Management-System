@@ -16,20 +16,25 @@ func Start() {
 	s := http.StripPrefix("/static/", http.FileServer(http.Dir("./static/")))
 	r.PathPrefix("/static/").Handler(s)
 
-	r.HandleFunc("/browse", controller.Browse).Methods("GET")
-	r.HandleFunc("/dashboard", controller.Dashboard).Methods("GET")
+	r.HandleFunc("/requestBook", controller.RequestBookLoader).Methods("GET")
+	r.HandleFunc("/pendingRequest", controller.PendingRequestLoader).Methods("GET")
+	r.HandleFunc("/returnBook", controller.ReturnBookLoader).Methods("GET")
+	r.HandleFunc("/addBook", controller.AddBookPage).Methods("GET")
+	r.HandleFunc("/requestManagement", controller.RequestManagementPage).Methods("GET")
 
 	r.HandleFunc("/", controller.Login).Methods("GET")
 	r.HandleFunc("/login", controller.LoginRequest).Methods("POST")
+	r.HandleFunc("/logout", controller.Logout).Methods("POST")
 	r.HandleFunc("/register", controller.Register).Methods("GET")
-	r.HandleFunc("/registerUser", controller.RegisterUser).Methods("POST")
 	r.HandleFunc("/admin/add", controller.AddBookHandler).Methods("POST")
-	r.HandleFunc("/admin/rem", controller.RemBookHandler).Methods("POST")
+	r.HandleFunc("/registerUser", controller.RegisterUser).Methods("POST")
+	r.HandleFunc("/admin/remove", controller.RemoveBookHandler).Methods("POST")
 	r.HandleFunc("/admin/acceptReq", controller.AcceptRequestHandler).Methods("POST")
 	r.HandleFunc("/admin/rejectReq", controller.RejectRequestHandler).Methods("POST")
 	r.HandleFunc("/user_side/checkin", controller.RequestBookHandler).Methods("POST")
 	r.HandleFunc("/user_side/checkout", controller.ReturnBookHandler).Methods("POST")
-	r.HandleFunc("/logout", controller.Logout).Methods("POST")
+
+	r.NotFoundHandler = http.HandlerFunc(controller.NotFoundHandler)
 
 	http.ListenAndServe(":8000", r)
 }

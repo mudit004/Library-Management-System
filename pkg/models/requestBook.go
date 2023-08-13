@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func RequestExists(db *sql.DB, UID, BID int) (bool, error) {
+func RequestExists(db *sql.DB, UID interface{}, BID int) (bool, error) {
 	query := "SELECT COUNT(*) FROM request WHERE UID=? and BookID=? and status<>3"
 	var count int
 	err := db.QueryRow(query, UID, BID).Scan(&count)
@@ -15,7 +15,7 @@ func RequestExists(db *sql.DB, UID, BID int) (bool, error) {
 	return count > 0, nil
 }
 
-func RequestBook(UID, BID int) string {
+func RequestBook(UID interface{}, BID int) string {
 	db, err := Connection()
 
 	if err != nil {
@@ -31,7 +31,7 @@ func RequestBook(UID, BID int) string {
 	if quantity > 0 {
 		req, _ := RequestExists(db, UID, BID)
 		if !req {
-			_, err = db.Exec("Insert Into request (UID, BookID, status) Values (?, ?, 1)", UID, BID)
+			_, err = db.Exec("Insert Into request (UID, BookID, status) Values (?, ?, 0)", UID, BID)
 			if err != nil {
 				return "Error in database Insertion"
 			}

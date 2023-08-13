@@ -23,14 +23,14 @@ func RemBook(title string) string {
 		if err != nil {
 			fmt.Println("Error in extracting data")
 		}
-
-		query = "Delete from books where bookID=?"
+		query = "Delete from request where BookID=?"
 		_, err = db.Exec(query, BID)
 
 		if err != nil {
 			return err.Error()
 		}
-		query = "Delete from request where BookID=?"
+
+		query = "Delete from books where bookID=?"
 		_, err = db.Exec(query, BID)
 
 		if err != nil {

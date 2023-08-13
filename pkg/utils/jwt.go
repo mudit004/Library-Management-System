@@ -3,7 +3,6 @@ package utils
 import (
 	"fmt"
 	"lms/pkg/types"
-	"math"
 	"net/http"
 	"strings"
 	"time"
@@ -45,11 +44,10 @@ func DecodeJWT(tokenStr string) (jwt.MapClaims, error) {
 
 	key := []byte(config.JWT_SECRET_KEY)
 
-	token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (int64(math.Round(interface{})), error) {
+	token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpected signing method")
 		}
-		fmt.Println(key, " yahi hain kya")
 		return key, nil
 	})
 

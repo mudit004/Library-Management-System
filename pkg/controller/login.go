@@ -36,9 +36,9 @@ func LoginRequest(w http.ResponseWriter, r *http.Request) {
 			}
 			http.SetCookie(w, &Cookie)
 			if isAdmin {
-				http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+				http.Redirect(w, r, "/addBook", http.StatusSeeOther)
 			} else {
-				http.Redirect(w, r, "/browse", http.StatusSeeOther)
+				http.Redirect(w, r, "/requestBook", http.StatusSeeOther)
 			}
 
 		}

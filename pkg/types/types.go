@@ -22,12 +22,14 @@ type Book struct {
 }
 
 type ListBook struct {
-	TotalBooks int       `json:"totalBooks"`
-	DiffBook   int       `json:"diffBooks"`
-	TotalUsers int       `json:"totalUsers"`
-	IssuedBook int       `json:"issuedBook"`
-	Books      []Book    `json:"books"`
-	Requests   []Request `json:"request"`
+	TotalBooks  int       `json:"totalBooks"`
+	DiffBook    int       `json:"diffBooks"`
+	TotalUsers  int       `json:"totalUsers"`
+	IssuedBook  int       `json:"issuedBook"`
+	Books       []Book    `json:"books"`
+	Requests    []Request `json:"request"`
+	Issued      []Request `json:"issued"`
+	UserRequest []Request `json:"userRequest"`
 }
 
 type ListRequest struct {
@@ -35,8 +37,9 @@ type ListRequest struct {
 }
 
 type Request struct {
-	RequestID int `json:"requestID"`
-	UserID    int `json:"userID"`
-	BookID    int `json:"bookID"`
-	Status    int `json:"status"`
+	RequestID int    `json:"requestID"`
+	UserID    int    `json:"userID"`
+	BookID    int    `json:"bookID"`
+	Status    int    `json:"status"`
+	BookName  string `json:"bookName"`
 }
