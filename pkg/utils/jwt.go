@@ -70,7 +70,7 @@ func DecodeJWT(tokenStr string) (jwt.MapClaims, error) {
 
 func ValidateJWT(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		goThroughUrls := []string{"/", "/register", "/login", "/registerUser"}
+		goThroughUrls := []string{"/", "/register", "/login", "/registerUser", "/admin", "/adminLogin"}
 		if slices.Contains(goThroughUrls, r.URL.Path) || strings.Split(r.URL.Path, "/")[1] == "static" {
 			next.ServeHTTP(w, r)
 			return

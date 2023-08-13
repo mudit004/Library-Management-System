@@ -23,6 +23,8 @@ func Start() {
 	r.HandleFunc("/requestManagement", controller.RequestManagementPage).Methods("GET")
 
 	r.HandleFunc("/", controller.Login).Methods("GET")
+	r.HandleFunc("/admin", controller.Admin).Methods("GET")
+	r.HandleFunc("/adminLogin", controller.AdminLogin).Methods("POST")
 	r.HandleFunc("/login", controller.LoginRequest).Methods("POST")
 	r.HandleFunc("/logout", controller.Logout).Methods("POST")
 	r.HandleFunc("/register", controller.Register).Methods("GET")
