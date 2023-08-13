@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Portal</title>
+    <!-- Include Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+    <link href="../static/AdminPortal.css" rel="stylesheet" />
+  </head>
+</html>
+<body>
+  <div class="container text-center mt-5">
+    <h1 class="mb-4">Admin Portal</h1>
+  </div>
+
+  <div class="container mt-5">
+    <div class="row justify-content-between">
+      <div class="col-md-2">
+        <div class="card shadow">
+          <div class="card-body">
+            <h5 class="card-title">Total Books</h5>
+            <p class="card-text">{{ .TotalBooks }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="card shadow">
+          <div class="card-body">
+            <h5 class="card-title">Different Books</h5>
+            <p class="card-text">{{ .DiffBook }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="card shadow">
+          <div class="card-body">
+            <h5 class="card-title">Issued Book</h5>
+            <p class="card-text">{{ .IssuedBook }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="card shadow">
+          <div class="card-body">
+            <h5 class="card-title">Total Users</h5>
+            <p class="card-text">{{ .TotalUsers }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-6">
+        <h2>Book List</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>BookID</th>
+              <th>Name</th>
+              <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Table content for Book List -->
+            {{ range .Books}}
+            <tr>
+              <td>{{ .BookID }}</td>
+              <td>{{ .Name }}</td>
+              <td>{{ .Quantity }}</td>
+            </tr>
+            {{end}}
+            <!-- Add more rows as needed -->
+          </tbody>
+        </table>
+      </div>
+      <div class="col-md-6">
+        <h2>Requested Books</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>RequestID</th>
+              <th>User ID</th>
+              <th>Book ID</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{ range .Requests }}
+            <!-- Table content for Requested Books -->
+            <tr>
+              <td>{{ .RequestID }}</td>
+              <td>{{ .UserID }}</td>
+              <td>{{ .BookID }}</td>
+              <td>{{ .Status }}</td>
+            </tr>
+            {{end}}
+            <!-- Add more rows as needed -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- HTML script -->
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 mb-4">
+        <div class="flip-card-3D-wrapper1">
+          <div id="flip-card1">
+            <div class="flip-card-front1">
+              <p><strong>Add Books OR Change Quantity</strong></p>
+              <button id="flip-card-btn-turn-to-back1">flip</button>
+            </div>
+            <div class="flip-card-back1">
+              <button id="flip-card-btn-turn-to-front1">flip</button>
+              <br /><br />
+              <form action="/admin/add" method="post">
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Book Name"
+                    name="bookname"
+                  />
+                </div>
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Quantity"
+                    name="quantity"
+                  />
+                </div>
+                <button type="submit" class="btn btn-submit btn-primary">
+                  Update
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 mb-4">
+        <div class="flip-card-3D-wrapper2">
+          <div id="flip-card2">
+            <div class="flip-card-front2">
+              <p>Delete Book</p>
+              <button id="flip-card-btn-turn-to-back2">flip</button>
+            </div>
+            <div class="flip-card-back2">
+              <button id="flip-card-btn-turn-to-front2">flip</button>
+              <br /><br />
+              <form action="/admin/rem" method="post">
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Book Name"
+                    name="bookname"
+                  />
+                </div>
+
+                <br />
+                <button type="submit" class="btn btn-submit btn-primary">
+                  Delete
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 mb-4">
+        <div class="flip-card-3D-wrapper3">
+          <div id="flip-card3">
+            <div class="flip-card-front3">
+              <p>Request Management</p>
+              <button id="flip-card-btn-turn-to-back3">flip</button>
+            </div>
+            <div class="flip-card-back3">
+              <button id="flip-card-btn-turn-to-front3">flip</button>
+              <br /><br />
+              <form action="/dashboard" method="post">
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="User ID"
+                  />
+                </div>
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Book ID"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  class="btn btn-submit btn-primary"
+                  formaction="/admin/rejectReq"
+                >
+                  Reject
+                </button>
+                <button
+                  type="submit"
+                  class="btn btn-submit btn-primary"
+                  formaction="/admin/acceptReq"
+                >
+                  Accept
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 mb-4">
+        <div class="flip-card-3D-wrapper4">
+          <div id="flip-card4">
+            <div class="flip-card-front4">
+              <p>Logout</p>
+              <button id="flip-card-btn-turn-to-back4">flip</button>
+            </div>
+            <div class="flip-card-back4">
+              <br /><br /><br />
+              <form action="/logout" method="post">
+                <button
+                  id="logoutBtn"
+                  class="btn btn-submit btn-primary"
+                  style="position: relative; top: 45%"
+                >
+                  Logout
+                </button>
+              </form>
+
+              <button id="flip-card-btn-turn-to-front4">flip</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+      document.getElementById("flip-card-btn-turn-to-back1").style.visibility =
+        "visible";
+      document.getElementById("flip-card-btn-turn-to-front1").style.visibility =
+        "visible";
+
+      document.getElementById("flip-card-btn-turn-to-back1").onclick =
+        function () {
+          document.getElementById("flip-card1").classList.toggle("do-flip");
+        };
+
+      document.getElementById("flip-card-btn-turn-to-front1").onclick =
+        function () {
+          document.getElementById("flip-card1").classList.toggle("do-flip");
+        };
+    });
+    document.addEventListener("DOMContentLoaded", function (event) {
+      document.getElementById("flip-card-btn-turn-to-back2").style.visibility =
+        "visible";
+      document.getElementById("flip-card-btn-turn-to-front2").style.visibility =
+        "visible";
+
+      document.getElementById("flip-card-btn-turn-to-back2").onclick =
+        function () {
+          document.getElementById("flip-card2").classList.toggle("do-flip");
+        };
+
+      document.getElementById("flip-card-btn-turn-to-front2").onclick =
+        function () {
+          document.getElementById("flip-card2").classList.toggle("do-flip");
+        };
+    });
+    document.addEventListener("DOMContentLoaded", function (event) {
+      document.getElementById("flip-card-btn-turn-to-back3").style.visibility =
+        "visible";
+      document.getElementById("flip-card-btn-turn-to-front3").style.visibility =
+        "visible";
+
+      document.getElementById("flip-card-btn-turn-to-back3").onclick =
+        function () {
+          document.getElementById("flip-card3").classList.toggle("do-flip");
+        };
+
+      document.getElementById("flip-card-btn-turn-to-front3").onclick =
+        function () {
+          document.getElementById("flip-card3").classList.toggle("do-flip");
+        };
+    });
+    document.addEventListener("DOMContentLoaded", function (event) {
+      document.getElementById("flip-card-btn-turn-to-back4").style.visibility =
+        "visible";
+      document.getElementById("flip-card-btn-turn-to-front4").style.visibility =
+        "visible";
+
+      document.getElementById("flip-card-btn-turn-to-back4").onclick =
+        function () {
+          document.getElementById("flip-card4").classList.toggle("do-flip");
+        };
+
+      document.getElementById("flip-card-btn-turn-to-front4").onclick =
+        function () {
+          document.getElementById("flip-card4").classList.toggle("do-flip");
+        };
+    });
+  </script>
+</body>
