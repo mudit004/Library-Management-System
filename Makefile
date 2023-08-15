@@ -2,15 +2,16 @@ Scripts = config.sh virtualHosting.sh
 
 all: $(Scripts)
 
-$(SCRIPTS):
-    .scripts/$@
+$(Scripts):
+	sudo chmod +x ./scripts/$@
+	./scripts/$@
 
 goSetup:
 	go mod tidy
 	go mod vendor
 
 script: 
-	.scripts/script.sh
+	./scripts/script.sh
 
 
 .PHONY: all script

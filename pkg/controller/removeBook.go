@@ -16,7 +16,7 @@ func RemoveBookHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(resp)
 		if resp != "" {
 			fmt.Println((resp))
-			http.Error(w, "Failed to remove book", http.StatusInternalServerError)
+			http.Redirect(w, r, "/addBook", http.StatusSeeOther)
 			return
 		}
 

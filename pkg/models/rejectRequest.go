@@ -30,7 +30,7 @@ func RejectRequest(UserID, BookID string) string {
 	err = db.QueryRow("Select status from request where UID=? and BookID=?", UserIDint, BookIDint).Scan(&status)
 
 	if status == 0 {
-		_, err = db.Exec("Update request set status = 1 where UID=? and BookID=?", UserIDint, BookIDint)
+		_, err = db.Exec("Delete from request where UID =? AND BookID=? and status=0", UserIDint, BookIDint)
 
 		if err != nil {
 			fmt.Println("Error in Updating table")
@@ -43,19 +43,13 @@ func RejectRequest(UserID, BookID string) string {
 			return "Error in updating table"
 		}
 	} else if status == 2 {
-		_, err = db.Exec("Delete from request where UID=? and BookID=?", UserIDint, BookIDint)
+		_, err = db.Exec("Update request set status=1 where UID=? AND BookID=? and status=2", UserIDint, BookIDint)
 
 		if err != nil {
 			fmt.Println("Error in Updating table")
 			return "Error in updating table"
 		}
 
-		_, err = db.Exec("Update books set quantity=quantity+1 where bookID=?", BookIDint)
-
-		if err != nil {
-			fmt.Println("Error in Updating table")
-			return "Error in updating table"
-		}
 	}
 	return ""
 }

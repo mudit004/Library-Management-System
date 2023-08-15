@@ -3,6 +3,7 @@ package models
 import (
 	"database/sql"
 	"fmt"
+	"github.com/tawesoft/golib/v2/dialog"
 )
 
 func RequestExists(db *sql.DB, UID interface{}, BID int) (bool, error) {
@@ -46,7 +47,8 @@ func RequestBook(UID interface{}, BID int) string {
 			return "Already requested for book"
 		}
 	} else {
-		return "Invalid Quantity"
+		dialog.Alert("Book is Not Available!!")
+		return "Book Not Available"
 	}
 
 }

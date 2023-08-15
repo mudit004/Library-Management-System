@@ -29,26 +29,24 @@
           class="collapse navbar-collapse justify-content-end"
           id="navbarNav"
         >
-          <ul class="nav justify-content-end">
+          <ul class="nav justify-content-end nav-pills">
             <li class="nav-item">
               <a
-                class="nav-link active me-5 border border-black"
+                class="nav-link me-5 text-dark"
                 aria-current="page"
                 href="/addBook"
                 >AddBook</a
               >
             </li>
             <li class="nav-item">
-              <a
-                class="nav-link active me-5 border border-black"
-                href="/requestManagement"
+              <a class="nav-link me-5 text-dark" href="/requestManagement"
                 >Request Management</a
               >
             </li>
             <li class="nav-item">
               <form id="myform" method="post" action="/logout"></form>
               <a
-                class="nav-link active me-5 border border-black"
+                class="nav-link me-5 text-dark"
                 href="#"
                 onclick="document.getElementById('myform').submit();"
                 >Logout</a
@@ -121,7 +119,7 @@
                 <td>{{ .BookName }}</td>
                 <td>{{ .Status }}</td>
                 <td>
-                  <form action="/dashboard" method="post">
+                  <form action="/requestManagement" method="post">
                     <div class="form-group">
                       <input
                         type="hidden"

@@ -29,26 +29,24 @@
           class="collapse navbar-collapse justify-content-end"
           id="navbarNav"
         >
-          <ul class="nav justify-content-end">
+          <ul class="nav justify-content-end nav-pills">
             <li class="nav-item">
               <a
-                class="nav-link active me-5 border border-black"
+                class="nav-link me-5 text-dark"
                 aria-current="page"
                 href="/addBook"
                 >AddBook</a
               >
             </li>
             <li class="nav-item">
-              <a
-                class="nav-link active me-5 border border-black"
-                href="/requestManagement"
+              <a class="nav-link me-5 text-dark" href="/requestManagement"
                 >Request Management</a
               >
             </li>
             <li class="nav-item">
               <form id="myform" method="post" action="/logout"></form>
               <a
-                class="nav-link active me-5 border border-black"
+                class="nav-link me-5 text-dark"
                 href="#"
                 onclick="document.getElementById('myform').submit();"
                 >Logout</a
@@ -107,8 +105,9 @@
               <tr>
                 <th scope="col">BookID</th>
                 <th scope="col">Book Name</th>
-                <th scope="col">Quantity</th>
+                <th scope="col">Available Quantity</th>
                 <th scope="col">Delete</th>
+                <th scope="col">Change Quantity</th>
               </tr>
             </thead>
             <tbody>
@@ -122,6 +121,31 @@
                     <input type="hidden" name="bookname" value="{{ .Name }}" />
                     <button type="submit" class="btn btn-outline-light">
                       Delete
+                    </button>
+                  </form>
+                </td>
+                <td>
+                  <form action="\addBook" method="post">
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Amount"
+                      aria-label="Sizing example input"
+                      aria-describedby="inputGroup-sizing-default"
+                      name="quantity"
+                    />
+                    <input type="hidden" name="bookID" value="{{ .BookID }}" />
+                    <button
+                      class="btn btn-outline-light"
+                      formaction="/incrementBook"
+                    >
+                      Increment
+                    </button>
+                    <button
+                      class="btn btn-outline-light"
+                      formaction="/decrementBook"
+                    >
+                      Decrement
                     </button>
                   </form>
                 </td>

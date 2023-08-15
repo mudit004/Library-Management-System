@@ -35,6 +35,8 @@ func Start() {
 	r.HandleFunc("/admin/rejectReq", controller.RejectRequestHandler).Methods("POST")
 	r.HandleFunc("/user_side/checkin", controller.RequestBookHandler).Methods("POST")
 	r.HandleFunc("/user_side/checkout", controller.ReturnBookHandler).Methods("POST")
+	r.HandleFunc("/incrementBook", controller.IncrementBookHandler).Methods("POST")
+	r.HandleFunc("/decrementBook", controller.DecrementBookHandler).Methods("POST")
 
 	r.NotFoundHandler = http.HandlerFunc(controller.NotFoundHandler)
 

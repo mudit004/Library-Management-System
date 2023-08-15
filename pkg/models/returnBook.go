@@ -27,7 +27,7 @@ func ReturnBook(UID interface{}, BID int) string {
 	status, _ := BookIssued(db, UID, BID)
 	fmt.Println(status)
 	if status {
-		_, err = db.Exec("Update request set status = 2 where UID =? and BookID = ?", UID, BID)
+		_, err = db.Exec("Update request set status = 2 where UID =? and BookID = ? and status=1", UID, BID)
 		if err != nil {
 			panic(err)
 		}
