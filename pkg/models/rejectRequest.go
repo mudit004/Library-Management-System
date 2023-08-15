@@ -27,7 +27,7 @@ func RejectRequest(UserID, BookID string) string {
 
 	var status int
 
-	err = db.QueryRow("Select status from request where UID=? and BookID=?", UserIDint, BookIDint).Scan(&status)
+	_ = db.QueryRow("Select status from request where UID=? and BookID=?", UserIDint, BookIDint).Scan(&status)
 
 	if status == 0 {
 		_, err = db.Exec("Delete from request where UID =? AND BookID=? and status=0", UserIDint, BookIDint)

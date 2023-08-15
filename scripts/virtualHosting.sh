@@ -3,7 +3,6 @@ sudo apt install apache2
 sudo a2enmod proxy proxy_http
 read -p "Enter your Server Name: " ServerName
 read -p "Enter you Server Admin: " ServerAdmin
-cd /etc
 conf_Content=$(cat <<EOF
 <VirtualHost *:80>
 	ServerName "$ServerName"
@@ -17,10 +16,9 @@ conf_Content=$(cat <<EOF
 EOF
 )
 
-sudo touch ${ServerName}.conf
-sudo echo "$conf_Content" > ${ServerName}.conf 
-
-
+sudo echo $conf_Content >> ${ServerName}.conf 
+sudo mv ${ServerName}.conf /etc
+cd /etc
 sudo a2ensite ${ServerName}.conf
 sudo a2dissite 000-default.conf
 sudo apache2ctl configtest

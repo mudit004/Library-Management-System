@@ -91,11 +91,11 @@ func FetchBook(UID interface{}) types.ListBook {
 	var issuedBooks int
 	var totalUsers int
 
-	err = db.QueryRow("Select SUM(quantity), Count(Distinct BookName) from books").Scan(&totalBooks, &diffBooks)
+	_ = db.QueryRow("Select SUM(quantity), Count(Distinct BookName) from books").Scan(&totalBooks, &diffBooks)
 
-	err = db.QueryRow("Select Count(*) from request where status =1").Scan(&issuedBooks)
+	_ = db.QueryRow("Select Count(*) from request where status =1").Scan(&issuedBooks)
 
-	err = db.QueryRow("Select Count(*) from user").Scan(&totalUsers)
+	_ = db.QueryRow("Select Count(*) from user").Scan(&totalUsers)
 
 	var listBooks types.ListBook
 	listBooks.Books = fetchBook

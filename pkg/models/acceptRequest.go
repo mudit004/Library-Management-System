@@ -28,7 +28,7 @@ func AcceptRequest(UserID, BookID string) string {
 
 	var status int
 
-	err = db.QueryRow("Select status from request where UID=? and BookID=? and status<>1 and status<>3", UserIDint, BookIDint).Scan(&status)
+	_ = db.QueryRow("Select status from request where UID=? and BookID=? and status<>1 and status<>3", UserIDint, BookIDint).Scan(&status)
 
 	if status == 0 {
 		fmt.Println("Updating 0 to 1")

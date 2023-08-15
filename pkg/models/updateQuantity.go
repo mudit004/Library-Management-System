@@ -44,7 +44,7 @@ func DecrementBook(BookID, amount string) error{
 		fmt.Println("Error:", err)
 		return err
 	}
-	BookIDint, err := strconv.Atoi(BookID)
+	BookIDint, _ := strconv.Atoi(BookID)
 	db, err := Connection()
 
 	if err != nil {

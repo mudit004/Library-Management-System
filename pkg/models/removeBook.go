@@ -2,10 +2,11 @@ package models
 
 import (
 	"fmt"
+
 	"github.com/tawesoft/golib/v2/dialog"
 )
 
-func RemBook(title string) string {
+func RemoveBook(title string) string {
 	db, err := Connection()
 
 	if err != nil {

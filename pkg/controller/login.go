@@ -27,7 +27,7 @@ func LoginRequest(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(username, " & ", password)
 
 		resp, token, isAdmin := models.Login(username, password)
-		if resp != true {
+		if !resp {
 			fmt.Println((resp))
 			fmt.Println("Failed to Login")
 			http.Redirect(w, r, "/", http.StatusSeeOther)
@@ -68,7 +68,7 @@ func AdminLogin(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(username, " & ", password)
 
 		resp, token, isAdmin := models.Login(username, password)
-		if resp != true {
+		if !resp {
 			fmt.Println((resp))
 			fmt.Println("Failed to Login")
 			http.Redirect(w, r, "/", http.StatusSeeOther)

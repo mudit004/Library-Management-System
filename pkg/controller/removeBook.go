@@ -12,7 +12,7 @@ func RemoveBookHandler(w http.ResponseWriter, r *http.Request) {
 		// Extract form values
 		name := r.FormValue("bookname")
 		fmt.Println(name)
-		resp := models.RemBook(name)
+		resp := models.RemoveBook(name)
 		fmt.Println(resp)
 		if resp != "" {
 			fmt.Println((resp))
