@@ -1,10 +1,9 @@
 Scripts = config.sh virtualHosting.sh
 
-all: $(Scripts)
+virtualHosting:
 
-$(Scripts):
-	sudo chmod +x ./scripts/$@
-	./scripts/$@
+	sudo chmod +x ./scripts/virtualHosting.sh
+	./scripts/virtualHosting.sh
 
 goSetup:
 	go mod tidy
