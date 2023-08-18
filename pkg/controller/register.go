@@ -19,15 +19,18 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 		password := r.FormValue("password")
 		ConfirmPassword := r.FormValue("confirmPassword")
 		if password != ConfirmPassword {
-			http.Redirect(w, r, "/register", http.StatusSeeOther)
-
-		}
-
-		err := models.Register(username, password)
-		if err != nil {
 			dialog.Alert("Password and Confirm Password must be same!!")
-		}
+			http.Redirect(w, r, "/register", http.StatusSeeOther)
+			return
+		} else {
 
-		http.Redirect(w, r, "/", http.StatusSeeOther)
+			err := models.Register(username, password)
+			if err != nil {
+				http.Redirect(w, r, "/internalServerError", http.StatusSeeOther)
+				return
+			}
+
+			http.Redirect(w, r, "/", http.StatusSeeOther)
+		}
 	}
 }

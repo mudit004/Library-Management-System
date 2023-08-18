@@ -106,6 +106,7 @@
                 <th scope="col">BookID</th>
                 <th scope="col">Book Name</th>
                 <th scope="col">Available Quantity</th>
+                <th scope="col">Issued Amount</th>
                 <th scope="col">Delete</th>
                 <th scope="col">Change Quantity</th>
               </tr>
@@ -116,6 +117,7 @@
                 <th scope="row">{{ .BookID }}</th>
                 <td>{{ .Name }}</td>
                 <td>{{ .Quantity }}</td>
+                <td>{{ .Issued }}</td>
                 <td>
                   <form action="/admin/remove" method="post">
                     <input type="hidden" name="bookname" value="{{ .Name }}" />

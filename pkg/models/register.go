@@ -3,6 +3,8 @@ package models
 import (
 	"fmt"
 	"lms/pkg/utils"
+
+	"github.com/tawesoft/golib/v2/dialog"
 )
 
 func Register(username, password string) error {
@@ -20,7 +22,7 @@ func Register(username, password string) error {
 		return err
 	}
 	if userExist != 0 {
-		fmt.Println("User Already Exist")
+		dialog.Alert("Username already exist")
 		return err
 	}
 	hashedPwd := utils.Hash(password)

@@ -31,11 +31,7 @@ func RejectRequest(UserID, BookID string) error {
 		if err != nil {
 			return err
 		}
-		_, err = db.Exec("Update books set quantity=quantity+1 where bookID=?", BookIDint)
 
-		if err != nil {
-			return err
-		}
 	} else if status == 2 {
 		_, err = db.Exec("Update request set status=1 where UID=? AND BookID=? and status=2", UserIDint, BookIDint)
 

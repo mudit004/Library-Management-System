@@ -19,6 +19,7 @@ type Book struct {
 	BookID   int    `json:"bookID"`
 	Name     string `json:"name"`
 	Quantity int    `json:"quantity"`
+	Issued   int    `json:"issued"`
 }
 
 type ListBook struct {

@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"lms/pkg/models"
 	"net/http"
 )
@@ -12,7 +11,6 @@ func RejectRequestHandler(w http.ResponseWriter, r *http.Request) {
 		// Extract form values
 		UID := r.FormValue("requestUID")
 		BID := r.FormValue("requestBID")
-		fmt.Println(UID, " & ", BID)
 
 		resp := models.RejectRequest(UID, BID)
 		if resp != nil {

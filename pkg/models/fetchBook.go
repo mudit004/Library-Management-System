@@ -23,7 +23,7 @@ func FetchBook(UID interface{}) types.ListBook {
 
 	for rows.Next() {
 		var book types.Book
-		err := rows.Scan(&book.BookID, &book.Name, &book.Quantity)
+		err := rows.Scan(&book.BookID, &book.Name, &book.Quantity, &book.Issued)
 		if err != nil {
 			fmt.Printf("Error %s in scanning row", err)
 		}
@@ -77,6 +77,7 @@ func FetchBook(UID interface{}) types.ListBook {
 		userRequest = append(userRequest, request)
 
 	}
+
 	var totalBooks int
 	var diffBooks int
 	var issuedBooks int

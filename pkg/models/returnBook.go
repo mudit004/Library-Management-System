@@ -2,7 +2,6 @@ package models
 
 import (
 	"database/sql"
-	"fmt"
 )
 
 func BookIssued(db *sql.DB, UID interface{}, BID int) (bool, error) {
@@ -15,24 +14,25 @@ func BookIssued(db *sql.DB, UID interface{}, BID int) (bool, error) {
 	return count > 0, nil
 }
 
-func ReturnBook(UID interface{}, BID int) string {
+func ReturnBook(UID interface{}, BID int) error {
 	db, err := Connection()
 
 	if err != nil {
-		fmt.Println("Error in Connecting to database")
-		return "Database Connection Error"
+		return err
 	}
 	defer db.Close()
 
-	status, _ := BookIssued(db, UID, BID)
-	fmt.Println(status)
+	status, err := BookIssued(db, UID, BID)
+	if err != nil {
+		return err
+	}
 	if status {
 		_, err = db.Exec("Update request set status = 2 where UID =? and BookID = ? and status=1", UID, BID)
 		if err != nil {
-			panic(err)
+			return err
 		}
 
 	}
-	return ""
+	return nil
 
 }

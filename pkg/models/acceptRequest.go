@@ -31,6 +31,17 @@ func AcceptRequest(UserID, BookID string) error {
 		if err != nil {
 			return err
 		}
+		_, err = db.Exec("Update books set quantity=quantity-1 where bookID=?", BookIDint)
+
+		if err != nil {
+			return err
+		}
+
+		_, err = db.Exec("Update books set issued=issued+1 where bookID=?", BookIDint)
+
+		if err != nil {
+			return err
+		}
 	} else if status == 2 {
 
 		_, err = db.Exec("Delete from request where status = 2 and UID=? and BookID=?", UserIDint, BookIDint)
@@ -44,6 +55,12 @@ func AcceptRequest(UserID, BookID string) error {
 		if err != nil {
 			return err
 		}
+		_, err = db.Exec("Update books set issued=issued-1 where bookID=?", BookIDint)
+
+		if err != nil {
+			return err
+		}
+
 	}
 	return nil
 }

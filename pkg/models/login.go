@@ -7,27 +7,21 @@ import (
 	"lms/pkg/utils"
 )
 
-func Login(username, password string) (verify bool, token string, isAdmin bool) {
-	db, error := Connection()
-	if error != nil {
+func Login(username, password string) (verify bool, token string, isAdmin bool, errors error) {
+	db, err := Connection()
+	if err != nil {
 		fmt.Println(("Database not connected"))
-		return
+		return false, "", false, err
 	}
 	query := "Select UserID, UName, Hash, Admin from user where Uname=(?) Limit 1"
 	var user types.User
-	err := db.QueryRow(query, username).Scan(&user.UID, &user.UName, &user.Hash, &user.Admin)
-	if err != nil {
-		fmt.Println("1")
-		return false, "", false
-	}
+	err = db.QueryRow(query, username).Scan(&user.UID, &user.UName, &user.Hash, &user.Admin)
 
 	if err != nil {
 		if err == sql.ErrNoRows {
-			fmt.Println("No user found with the specified username.")
-			return false, "", false
+			return false, "", false, nil
 		} else {
-			fmt.Println("2")
-			return false, "", false
+			return false, "", false, err
 
 		}
 	} else {
@@ -43,10 +37,9 @@ func Login(username, password string) (verify bool, token string, isAdmin bool) 
 			} else {
 				isAdmin = false
 			}
-			return true, token, isAdmin
+			return true, token, isAdmin, nil
 		} else {
-			fmt.Println("Wrong Password")
-			return false, "", false
+			return false, "", false, nil
 		}
 
 	}

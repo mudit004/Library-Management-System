@@ -21,7 +21,11 @@ func RequestBookHandler(w http.ResponseWriter, r *http.Request) {
 				http.Redirect(w, r, "/internalServerError", http.StatusSeeOther)
 				return
 			} else {
-				_ = models.RequestBook(claims["UID"], BIDint)
+				err = models.RequestBook(claims["UID"], BIDint)
+				if err != nil {
+					http.Redirect(w, r, "/internalServerError", http.StatusSeeOther)
+					return
+				}
 				http.Redirect(w, r, "/requestBook", http.StatusSeeOther)
 				return
 

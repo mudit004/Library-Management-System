@@ -25,7 +25,11 @@ func LoginRequest(w http.ResponseWriter, r *http.Request) {
 		username := r.FormValue("username")
 		password := r.FormValue("pwd")
 
-		resp, token, isAdmin := models.Login(username, password)
+		resp, token, isAdmin, err := models.Login(username, password)
+		if err != nil {
+			http.Redirect(w, r, "/internalServerError", http.StatusSeeOther)
+			return
+		}
 		if !resp {
 			fmt.Println((resp))
 			fmt.Println("Failed to Login")
@@ -65,7 +69,12 @@ func AdminLogin(w http.ResponseWriter, r *http.Request) {
 		username := r.FormValue("username")
 		password := r.FormValue("pwd")
 
-		resp, token, isAdmin := models.Login(username, password)
+		resp, token, isAdmin, err := models.Login(username, password)
+		if err != nil {
+			http.Redirect(w, r, "/internalServerError", http.StatusSeeOther)
+			return
+		}
+
 		if !resp {
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 			return

@@ -3,52 +3,51 @@ package models
 import (
 	"database/sql"
 	"fmt"
+
 	"github.com/tawesoft/golib/v2/dialog"
 )
 
-func RequestExists(db *sql.DB, UID interface{}, BID int) (bool, error) {
+func RequestExists(db *sql.DB, UserID interface{}, BookID int) (bool, error) {
 	query := "SELECT COUNT(*) FROM request WHERE UID=? and BookID=? and status<>3"
 	var count int
-	err := db.QueryRow(query, UID, BID).Scan(&count)
+	err := db.QueryRow(query, UserID, BookID).Scan(&count)
 	if err != nil {
 		return false, err
 	}
 	return count > 0, nil
 }
 
-func RequestBook(UID interface{}, BID int) string {
+func RequestBook(UserID interface{}, BookID int) error {
 	db, err := Connection()
 
 	if err != nil {
-		fmt.Println("Error in Connecting to database")
-		return "Database Connection Error"
+		return err
 	}
 	defer db.Close()
 	var quantity int
-	err = db.QueryRow("Select quantity from books where BookID=?", BID).Scan(&quantity)
+	err = db.QueryRow("Select quantity from books where BookID=?", BookID).Scan(&quantity)
 	if err != nil {
-		return "Book Does Not exist"
+		return err
 	}
 	if quantity > 0 {
-		req, _ := RequestExists(db, UID, BID)
+		req, err := RequestExists(db, UserID, BookID)
+		if err != nil {
+			return err
+		}
 		if !req {
-			_, err = db.Exec("Insert Into request (UID, BookID, status) Values (?, ?, 0)", UID, BID)
+			_, err = db.Exec("Insert Into request (UID, BookID, status) Values (?, ?, 0)", UserID, BookID)
 			if err != nil {
-				return "Error in database Insertion"
+				return err
 			}
-			_, err = db.Exec("Update books set quantity=quantity-1 where bookID=?", BID)
 
-			if err != nil {
-				fmt.Println("Error in Updating table")
-				return "Error in updating table"
-			}
-			return ""
+			return nil
 		} else {
-			return "Already requested for book"
+			dialog.Alert("Already requested for book")
+			return nil
 		}
 	} else {
 		dialog.Alert("Book is Not Available!!")
-		return "Book Not Available"
+		return fmt.Errorf("book is not available")
 	}
 
 }
