@@ -24,7 +24,6 @@ func LoginRequest(w http.ResponseWriter, r *http.Request) {
 		// Extract form values
 		username := r.FormValue("username")
 		password := r.FormValue("pwd")
-		fmt.Println(username, " & ", password)
 
 		resp, token, isAdmin := models.Login(username, password)
 		if !resp {
@@ -65,12 +64,9 @@ func AdminLogin(w http.ResponseWriter, r *http.Request) {
 		// Extract form values
 		username := r.FormValue("username")
 		password := r.FormValue("pwd")
-		fmt.Println(username, " & ", password)
 
 		resp, token, isAdmin := models.Login(username, password)
 		if !resp {
-			fmt.Println((resp))
-			fmt.Println("Failed to Login")
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 			return
 		} else {

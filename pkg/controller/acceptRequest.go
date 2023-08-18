@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"lms/pkg/models"
 	"net/http"
 )
@@ -12,12 +11,9 @@ func AcceptRequestHandler(w http.ResponseWriter, r *http.Request) {
 		// Extract form values
 		UID := r.FormValue("requestUID")
 		BID := r.FormValue("requestBID")
-		fmt.Println(UID, " & ", BID)
-
 		resp := models.AcceptRequest(UID, BID)
-		if resp != "" {
-			fmt.Println((resp))
-			http.Error(w, "Failed to accept request", http.StatusInternalServerError)
+		if resp != nil {
+			http.Redirect(w, r, "/internalServerError", http.StatusSeeOther)
 			return
 		}
 

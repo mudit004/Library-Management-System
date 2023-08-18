@@ -16,7 +16,6 @@ func Login(username, password string) (verify bool, token string, isAdmin bool) 
 	query := "Select UserID, UName, Hash, Admin from user where Uname=(?) Limit 1"
 	var user types.User
 	err := db.QueryRow(query, username).Scan(&user.UID, &user.UName, &user.Hash, &user.Admin)
-	fmt.Println(user)
 	if err != nil {
 		fmt.Println("1")
 		return false, "", false
@@ -32,8 +31,8 @@ func Login(username, password string) (verify bool, token string, isAdmin bool) 
 
 		}
 	} else {
-		hashPwd := utils.Hash(password)
-		fmt.Println(hashPwd)
+		// hashPwd := utils.Hash(password)
+		// fmt.Println(hashPwd)
 		check := utils.Check(password, user.Hash)
 
 		if check {

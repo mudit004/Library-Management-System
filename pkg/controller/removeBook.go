@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"lms/pkg/models"
 	"net/http"
 )
@@ -11,12 +10,9 @@ func RemoveBookHandler(w http.ResponseWriter, r *http.Request) {
 
 		// Extract form values
 		name := r.FormValue("bookname")
-		fmt.Println(name)
 		resp := models.RemoveBook(name)
-		fmt.Println(resp)
-		if resp != "" {
-			fmt.Println((resp))
-			http.Redirect(w, r, "/addBook", http.StatusSeeOther)
+		if resp != nil {
+			http.Redirect(w, r, "/internalServerError", http.StatusSeeOther)
 			return
 		}
 

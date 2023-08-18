@@ -31,6 +31,5 @@ func Register(username, password string) error {
 		fmt.Println("Inserting values into user table failed")
 		return err
 	}
-	fmt.Println("inserted details sucessfully")
 	return nil
 }

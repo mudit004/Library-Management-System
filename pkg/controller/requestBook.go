@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"lms/pkg/models"
 	"lms/pkg/utils"
 	"net/http"
@@ -12,20 +11,17 @@ func RequestBookHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
 		BID := r.FormValue("checkInID")
 		BIDint, _ := strconv.Atoi(BID)
-		fmt.Println(BID)
 		cookie, err := r.Cookie("access-token")
 		if err != nil {
-			fmt.Println("Cookie Does Not exist")
+			return
 		} else {
 			token := cookie.Value
 			claims, err := utils.DecodeJWT(token)
 			if err != nil {
-				fmt.Println("Error in decoding")
+				http.Redirect(w, r, "/internalServerError", http.StatusSeeOther)
+				return
 			} else {
-				resp := models.RequestBook(claims["UID"], BIDint)
-				if resp != "" {
-					fmt.Println(resp)
-				}
+				_ = models.RequestBook(claims["UID"], BIDint)
 				http.Redirect(w, r, "/requestBook", http.StatusSeeOther)
 				return
 

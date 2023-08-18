@@ -2,7 +2,6 @@ package models
 
 import (
 	"database/sql"
-	"fmt"
 	"strconv"
 )
 
@@ -16,46 +15,41 @@ func BookExists(db *sql.DB, title string) (bool, error) {
 	return count > 0, nil
 }
 
-func AddBook(title string, quantity string) string {
+func AddBook(title string, quantity string) error {
 	db, err := Connection()
 
 	if err != nil {
-		fmt.Println("Error in Connecting to database")
-		return "Database Connection Error"
+		return err
 	}
 	defer db.Close()
-	fmt.Println(title, " : ", quantity)
 	quantityint, err := strconv.Atoi(quantity)
 	if err != nil {
-		fmt.Println("Error:", err)
-		return "error in parsing"
+		return err
 	}
 
 	exist, err := BookExists(db, title)
 	if err != nil {
-		return "Command error"
+		return err
 	}
 	if quantityint > 0 {
 		if exist {
 			query := "UPDATE books SET quantity = ? WHERE BookName=?"
 			_, err := db.Exec(query, quantityint, title)
 			if err != nil {
-				panic(err)
+				return err
 			}
 		} else {
 			query := "INSERT INTO books (BookName, quantity) VALUES (?, ?)"
 			_, err = db.Exec(query, title, quantityint)
 			if err != nil {
-				fmt.Println(err)
-				return "Unexpected Error occured"
+				return err
 			}
 		}
 
-		fmt.Println("Operation successful")
-		return ""
+		return nil
 	} else {
-		fmt.Println("Invalid quantity")
-		return "Invalid quantity"
+
+		return err
 	}
 
 }

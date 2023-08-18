@@ -1,20 +1,18 @@
 package controller
 
 import (
-	"fmt"
 	"lms/pkg/models"
 	"net/http"
 )
 
-func IncrementBookHandler(w http.ResponseWriter, r *http.Request){
-	if r.Method == http.MethodPost{
+func IncrementBookHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost {
 		quantity := r.FormValue("quantity")
 		bookID := r.FormValue("bookID")
 
 		resp := models.IncrementBook(bookID, quantity)
-		if resp!=nil {
-			fmt.Println((resp))
-			http.Error(w, "Failed to process Request", http.StatusInternalServerError)
+		if resp != nil {
+			http.Redirect(w, r, "/internalServerError", http.StatusSeeOther)
 			return
 		}
 
@@ -23,17 +21,12 @@ func IncrementBookHandler(w http.ResponseWriter, r *http.Request){
 	}
 }
 
-func DecrementBookHandler(w http.ResponseWriter, r *http.Request){
-	if r.Method == http.MethodPost{
+func DecrementBookHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost {
 		quantity := r.FormValue("quantity")
 		bookID := r.FormValue("bookID")
 
-		resp := models.DecrementBook(bookID, quantity)
-		if resp!=nil {
-			fmt.Println((resp))
-			http.Redirect(w, r, "/addBook", http.StatusSeeOther)
-			return
-		}
+		_ = models.DecrementBook(bookID, quantity)
 
 		http.Redirect(w, r, "/addBook", http.StatusSeeOther)
 		return

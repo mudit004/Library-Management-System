@@ -15,9 +15,8 @@ func RejectRequestHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(UID, " & ", BID)
 
 		resp := models.RejectRequest(UID, BID)
-		if resp != "" {
-			fmt.Println((resp))
-			http.Error(w, "Failed to reject request", http.StatusInternalServerError)
+		if resp != nil {
+			http.Redirect(w, r, "/internalServerError", http.StatusSeeOther)
 			return
 		}
 

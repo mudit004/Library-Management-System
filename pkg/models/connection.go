@@ -20,7 +20,7 @@ func NewConfig(path string) (*types.Config, error) {
 	config := &types.Config{}
 
 	//open config file
-	file, err := os.Open(path)
+	file, err := os.Open(path)	
 	if err != nil {
 		return nil, err
 	}

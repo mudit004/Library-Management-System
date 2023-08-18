@@ -24,6 +24,5 @@ func GetUID(w http.ResponseWriter, r *http.Request) interface{} {
 			}
 		}
 	}
-	fmt.Println("YaHA HAIN ISSUE")
 	return nil
 }

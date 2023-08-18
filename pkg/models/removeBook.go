@@ -6,18 +6,17 @@ import (
 	"github.com/tawesoft/golib/v2/dialog"
 )
 
-func RemoveBook(title string) string {
+func RemoveBook(title string) error {
 	db, err := Connection()
 
 	if err != nil {
-		fmt.Println("Error in Connecting to database")
-		return "Database Connection Error"
+		return err
 	}
 	defer db.Close()
 
 	exist, err := BookExists(db, title)
 	if err != nil {
-		return "BookExists function Error"
+		return err
 	}
 
 	if exist {
@@ -25,11 +24,13 @@ func RemoveBook(title string) string {
 		var BID int
 		err := db.QueryRow(query, title).Scan(&BID)
 		if err != nil {
-			fmt.Println("Error in extracting data")
-			return "Error in extracting data"
+			return err
 		}
 		query = "Select status from request where BookID=?"
 		rows, err := db.Query(query, BID)
+		if err != nil {
+			return err
+		}
 		var statusCode []int
 		for rows.Next() {
 			var status int
@@ -39,7 +40,6 @@ func RemoveBook(title string) string {
 			}
 			statusCode = append(statusCode, status)
 		}
-		fmt.Println("------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>----------------------------------------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ", statusCode)
 		var issueStatus bool = false
 		for i := 0; i < cap(statusCode); i++ {
 			if statusCode[i] == 1 {
@@ -49,26 +49,26 @@ func RemoveBook(title string) string {
 		}
 
 		if issueStatus {
-			fmt.Println("Hello Guyzz <<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ")
 			dialog.Alert("Book is issued. Can't Delete!!!")
-			return "Books Already Issued"
+			return nil
 		}
 		query = "Delete from request where BookID=?"
 		_, err = db.Exec(query, BID)
 
 		if err != nil {
-			return err.Error()
+			return err
 		}
 
 		query = "Delete from books where bookID=?"
 		_, err = db.Exec(query, BID)
 
 		if err != nil {
-			return err.Error()
+			return err
 		}
-		return ""
+		return nil
 	} else {
-		return "Book Does Not Exist"
+		dialog.Alert("Book Does Not Exist")
+		return nil
 	}
 
 }

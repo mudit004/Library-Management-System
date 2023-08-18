@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"lms/pkg/models"
 	"net/http"
 )
@@ -12,13 +11,9 @@ func AddBookHandler(w http.ResponseWriter, r *http.Request) {
 		// Extract form values
 		name := r.FormValue("bookname")
 		quantity := r.FormValue("quantity")
-		fmt.Println(name, " & ", quantity)
-
 		resp := models.AddBook(name, quantity)
-		if resp != "" {
-			fmt.Println((resp))
-			// http.Error(w, "Failed to add book", http.StatusInternalServerError)
-			http.Redirect(w, r, "/addBook", http.StatusSeeOther)
+		if resp != nil {
+			http.Redirect(w, r, "/internalServerError", http.StatusSeeOther)
 			return
 		}
 

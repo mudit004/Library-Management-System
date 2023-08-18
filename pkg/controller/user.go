@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"lms/pkg/models"
 	"lms/pkg/utils"
 	"lms/pkg/views"
@@ -38,7 +37,6 @@ func ReturnBookLoader(writer http.ResponseWriter, request *http.Request) {
 	} else {
 		t := views.LoginPage("returnBook")
 		writer.WriteHeader(http.StatusOK)
-		fmt.Println("#####################################", utils.GetUID(writer, request))
 		formData := models.FetchBook(utils.GetUID(writer, request))
 		t.Execute(writer, formData)
 
