@@ -9,7 +9,7 @@ import (
 )
 
 func Register(writer http.ResponseWriter, request *http.Request) {
-	t := views.LoginPage("Register")
+	t := views.RenderPage("Register")
 	t.Execute(writer, nil)
 }
 

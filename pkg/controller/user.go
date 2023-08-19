@@ -8,7 +8,7 @@ import (
 )
 
 func Browse(writer http.ResponseWriter, request *http.Request) {
-	t := views.LoginPage("Browse")
+	t := views.RenderPage("Browse")
 	writer.WriteHeader(http.StatusOK)
 
 	userID, err := utils.GetUserID(writer, request)
@@ -31,7 +31,7 @@ func RequestBookLoader(writer http.ResponseWriter, request *http.Request) {
 		Logout(writer, request)
 		return
 	} else {
-		t := views.LoginPage("requestBook")
+		t := views.RenderPage("requestBook")
 		writer.WriteHeader(http.StatusOK)
 		userID, err := utils.GetUserID(writer, request)
 		if err != nil {
@@ -56,7 +56,7 @@ func ReturnBookLoader(writer http.ResponseWriter, request *http.Request) {
 		Logout(writer, request)
 		return
 	} else {
-		t := views.LoginPage("returnBook")
+		t := views.RenderPage("returnBook")
 		writer.WriteHeader(http.StatusOK)
 		userID, err := utils.GetUserID(writer, request)
 		if err != nil {
@@ -81,7 +81,7 @@ func PendingRequestLoader(writer http.ResponseWriter, request *http.Request) {
 		Logout(writer, request)
 		return
 	} else {
-		t := views.LoginPage("requestPending")
+		t := views.RenderPage("requestPending")
 		writer.WriteHeader(http.StatusOK)
 		userID, err := utils.GetUserID(writer, request)
 		if err != nil {

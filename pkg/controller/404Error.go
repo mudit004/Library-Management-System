@@ -7,7 +7,7 @@ import (
 
 func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotFound)
-	t := views.LoginPage("404error")
+	t := views.RenderPage("404error")
 	t.Execute(w, nil)
 
 }

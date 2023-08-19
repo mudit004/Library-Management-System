@@ -28,7 +28,7 @@ func IsAdmin(w http.ResponseWriter, r *http.Request) bool {
 
 func AddBookPage(writer http.ResponseWriter, request *http.Request) {
 	if IsAdmin(writer, request) {
-		t := views.LoginPage("Books")
+		t := views.RenderPage("Books")
 		writer.WriteHeader(http.StatusOK)
 		userID, err := utils.GetUserID(writer, request)
 		if err != nil {
@@ -50,7 +50,7 @@ func AddBookPage(writer http.ResponseWriter, request *http.Request) {
 
 func RequestManagementPage(writer http.ResponseWriter, request *http.Request) {
 	if IsAdmin(writer, request) {
-		t := views.LoginPage("request")
+		t := views.RenderPage("request")
 		writer.WriteHeader(http.StatusOK)
 		userID, err := utils.GetUserID(writer, request)
 		if err != nil {

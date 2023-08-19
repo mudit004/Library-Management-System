@@ -8,12 +8,12 @@ import (
 )
 
 func Login(writer http.ResponseWriter, request *http.Request) {
-	t := views.LoginPage("loginPage")
+	t := views.RenderPage("loginPage")
 	t.Execute(writer, nil)
 }
 
 func Admin(writer http.ResponseWriter, request *http.Request) {
-	t := views.LoginPage("loginAdmin")
+	t := views.RenderPage("loginAdmin")
 	t.Execute(writer, nil)
 }
 
