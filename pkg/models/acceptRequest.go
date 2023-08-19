@@ -23,10 +23,12 @@ func AcceptRequest(UserID, BookID string) error {
 
 	var status int
 
-	_ = db.QueryRow("Select status from request where UID=? and BookID=? and status<>1 and status<>3", UserIDint, BookIDint).Scan(&status)
-
+	err = db.QueryRow("Select status from request where UserID=? and BookID=? and status<>1 and status<>3", UserIDint, BookIDint).Scan(&status)
+	if err != nil {
+		return err
+	}
 	if status == 0 {
-		_, err = db.Exec("Update request set status = 1 where UID=? and BookID=? and status = 0", UserIDint, BookIDint)
+		_, err = db.Exec("Update request set status = 1 where UserID=? and BookID=? and status = 0", UserIDint, BookIDint)
 
 		if err != nil {
 			return err
@@ -44,7 +46,7 @@ func AcceptRequest(UserID, BookID string) error {
 		}
 	} else if status == 2 {
 
-		_, err = db.Exec("Delete from request where status = 2 and UID=? and BookID=?", UserIDint, BookIDint)
+		_, err = db.Exec("Delete from request where status = 2 and UserID=? and BookID=?", UserIDint, BookIDint)
 
 		if err != nil {
 			return err

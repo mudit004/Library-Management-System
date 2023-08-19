@@ -4,13 +4,13 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func Hash(pwd string) string {
+func Hash(pwd string) (string, error) {
 	var saltRounds int = 10
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(pwd), saltRounds)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
-	return string(hashedPassword)
+	return string(hashedPassword), nil
 }
 
 func Check(inputPassword string, hashedPassword string) bool {

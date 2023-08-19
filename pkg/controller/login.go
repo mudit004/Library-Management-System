@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"lms/pkg/models"
 	"lms/pkg/views"
 	"net/http"
@@ -23,7 +22,7 @@ func LoginRequest(w http.ResponseWriter, r *http.Request) {
 
 		// Extract form values
 		username := r.FormValue("username")
-		password := r.FormValue("pwd")
+		password := r.FormValue("password")
 
 		resp, token, isAdmin, err := models.Login(username, password)
 		if err != nil {
@@ -31,8 +30,6 @@ func LoginRequest(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		if !resp {
-			fmt.Println((resp))
-			fmt.Println("Failed to Login")
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 			return
 		} else {
@@ -67,7 +64,7 @@ func AdminLogin(w http.ResponseWriter, r *http.Request) {
 
 		// Extract form values
 		username := r.FormValue("username")
-		password := r.FormValue("pwd")
+		password := r.FormValue("password")
 
 		resp, token, isAdmin, err := models.Login(username, password)
 		if err != nil {
@@ -79,13 +76,13 @@ func AdminLogin(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 			return
 		} else {
-			Cookie := http.Cookie{
+			cookie := http.Cookie{
 				Name:    "access-token",
 				Value:   token,
 				Expires: time.Now().Add(48 * time.Hour),
 				Path:    "/",
 			}
-			http.SetCookie(w, &Cookie)
+			http.SetCookie(w, &cookie)
 			if isAdmin {
 				http.Redirect(w, r, "/addBook", http.StatusSeeOther)
 			} else {

@@ -2,7 +2,6 @@ package models
 
 import (
 	"database/sql"
-	"fmt"
 	"lms/pkg/types"
 	"lms/pkg/utils"
 )
@@ -10,12 +9,11 @@ import (
 func Login(username, password string) (verify bool, token string, isAdmin bool, errors error) {
 	db, err := Connection()
 	if err != nil {
-		fmt.Println(("Database not connected"))
 		return false, "", false, err
 	}
-	query := "Select UserID, UName, Hash, Admin from user where Uname=(?) Limit 1"
+	query := "Select UserID, UserName, Hash, Admin from user where UserName=(?) Limit 1"
 	var user types.User
-	err = db.QueryRow(query, username).Scan(&user.UID, &user.UName, &user.Hash, &user.Admin)
+	err = db.QueryRow(query, username).Scan(&user.UserID, &user.UserName, &user.Hash, &user.Admin)
 
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -25,12 +23,13 @@ func Login(username, password string) (verify bool, token string, isAdmin bool, 
 
 		}
 	} else {
-		// hashPwd := utils.Hash(password)
-		// fmt.Println(hashPwd)
 		check := utils.Check(password, user.Hash)
 
 		if check {
-			token := utils.NewJWT(user)
+			token, err := utils.NewJWT(user)
+			if err != nil {
+				return false, "", false, err
+			}
 			var isAdmin bool
 			if user.Admin == 1 {
 				isAdmin = true

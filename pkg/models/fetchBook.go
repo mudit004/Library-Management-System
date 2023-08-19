@@ -1,14 +1,24 @@
 package models
 
 import (
-	"fmt"
 	"lms/pkg/types"
 )
 
-func FetchBook(UID interface{}) types.ListBook {
+func FetchBook(UserID interface{}) (types.ListBook, error) {
+
+	var nullListBooks types.ListBook
+	nullListBooks.Books = nil
+	nullListBooks.Requests = nil
+	nullListBooks.TotalBooks = 0
+	nullListBooks.DifferentBook = 0
+	nullListBooks.TotalUsers = 0
+	nullListBooks.IssuedBook = 0
+	nullListBooks.IssuedAmount = nil
+	nullListBooks.UserRequest = nil
+
 	db, err := Connection()
 	if err != nil {
-		fmt.Println("Error in connecting to database")
+		return nullListBooks, err
 	}
 
 	selectSQL := "Select * from books"
@@ -16,7 +26,7 @@ func FetchBook(UID interface{}) types.ListBook {
 	defer db.Close()
 
 	if err != nil {
-		fmt.Println("Error in Retrieving data for html books template")
+		return nullListBooks, err
 	}
 
 	var fetchBook []types.Book
@@ -25,46 +35,46 @@ func FetchBook(UID interface{}) types.ListBook {
 		var book types.Book
 		err := rows.Scan(&book.BookID, &book.Name, &book.Quantity, &book.Issued)
 		if err != nil {
-			fmt.Printf("Error %s in scanning row", err)
+			return nullListBooks, err
 		}
 		fetchBook = append(fetchBook, book)
 
 	}
-	reqSQL := "Select request.reqID, request.UID, request.BookID, request.status, books.BookName from request Inner join books on request.BookID=books.bookID where (status=0 or status=2)"
+	reqSQL := "Select request.requestID, request.UserID, request.BookID, request.status, books.BookName from request Inner join books on request.BookID=books.bookID where (status=0 or status=2)"
 	rows, err = db.Query(reqSQL)
 	if err != nil {
-		fmt.Println("Error in Retrieving data for html books template")
+		return nullListBooks, err
 	}
 	var fetchRequest []types.Request
 	for rows.Next() {
 		var request types.Request
 		err := rows.Scan(&request.RequestID, &request.UserID, &request.BookID, &request.Status, &request.BookName)
 		if err != nil {
-			fmt.Printf("Error %s in scanning row", err)
+			return nullListBooks, err
 		}
 		fetchRequest = append(fetchRequest, request)
 
 	}
-	reqSQL = "Select request.reqID, request.UID, request.BookID, request.status, books.BookName from request Inner join books on request.BookID=books.bookID where status=1 AND UID=?"
-	rows, err = db.Query(reqSQL, UID)
+	reqSQL = "Select request.requestID, request.UserID, request.BookID, request.status, books.BookName from request Inner join books on request.BookID=books.bookID where status=1 AND UserID=?"
+	rows, err = db.Query(reqSQL, UserID)
 	if err != nil {
-		fmt.Println("Error in Retrieving data for html books template")
+		return nullListBooks, err
 	}
-	var issued []types.Request
+	var issuedAmount []types.Request
 	for rows.Next() {
 		var request types.Request
 		err := rows.Scan(&request.RequestID, &request.UserID, &request.BookID, &request.Status, &request.BookName)
 		if err != nil {
-			fmt.Printf("Error %s in scanning row", err)
+			return nullListBooks, err
 		}
-		issued = append(issued, request)
+		issuedAmount = append(issuedAmount, request)
 
 	}
 
-	reqSQL = "Select request.reqID, request.UID, request.BookID, request.status, books.BookName from request Inner join books  on request.BookID=books.bookID where (status=0 or status=2) and request.UID=?"
-	rows, err = db.Query(reqSQL, UID)
+	reqSQL = "Select request.requestID, request.UserID, request.BookID, request.status, books.BookName from request Inner join books  on request.BookID=books.bookID where (status=0 or status=2) and request.UserID=?"
+	rows, err = db.Query(reqSQL, UserID)
 	if err != nil {
-		fmt.Println("Error in Retrieving data for html books template")
+		return nullListBooks, err
 	}
 
 	var userRequest []types.Request
@@ -72,31 +82,41 @@ func FetchBook(UID interface{}) types.ListBook {
 		var request types.Request
 		err := rows.Scan(&request.RequestID, &request.UserID, &request.BookID, &request.Status, &request.BookName)
 		if err != nil {
-			fmt.Printf("Error %s in scanning row", err)
+			return nullListBooks, err
 		}
 		userRequest = append(userRequest, request)
 
 	}
 
 	var totalBooks int
-	var diffBooks int
+	var differentBooks int
 	var issuedBooks int
 	var totalUsers int
 
-	_ = db.QueryRow("Select SUM(quantity), Count(Distinct BookName) from books").Scan(&totalBooks, &diffBooks)
+	err = db.QueryRow("Select SUM(quantity), Count(Distinct BookName) from books").Scan(&totalBooks, &differentBooks)
 
-	_ = db.QueryRow("Select Count(*) from request where status =1").Scan(&issuedBooks)
+	if err != nil {
+		return nullListBooks, err
+	}
 
-	_ = db.QueryRow("Select Count(*) from user").Scan(&totalUsers)
+	err = db.QueryRow("Select Count(*) from request where status =1").Scan(&issuedBooks)
+	if err != nil {
+		return nullListBooks, err
+	}
+
+	err = db.QueryRow("Select Count(*) from user").Scan(&totalUsers)
+	if err != nil {
+		return nullListBooks, err
+	}
 
 	var listBooks types.ListBook
 	listBooks.Books = fetchBook
 	listBooks.Requests = fetchRequest
 	listBooks.TotalBooks = totalBooks
-	listBooks.DiffBook = diffBooks
+	listBooks.DifferentBook = differentBooks
 	listBooks.TotalUsers = totalUsers
 	listBooks.IssuedBook = issuedBooks
-	listBooks.Issued = issued
+	listBooks.IssuedAmount = issuedAmount
 	listBooks.UserRequest = userRequest
-	return listBooks
+	return listBooks, nil
 }

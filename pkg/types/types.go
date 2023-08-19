@@ -1,18 +1,18 @@
 package types
 
 type Config struct {
-	UNAME          string `yaml:"DB_USERNAME"`
-	Pwd            string `yaml:"DB_PASSWORD"`
+	UserNAME       string `yaml:"DB_USERNAME"`
+	Password       string `yaml:"DB_PASSWORD"`
 	Host           string `yaml:"DB_HOST"`
 	DB             string `yaml:"DB_NAME"`
 	JWT_SECRET_KEY string `yaml:"JWT_SECRET_KEY"`
 }
 
 type User struct {
-	UID   int
-	UName string
-	Hash  string
-	Admin int
+	UserID   int
+	UserName string
+	Hash     string
+	Admin    int
 }
 
 type Book struct {
@@ -23,14 +23,14 @@ type Book struct {
 }
 
 type ListBook struct {
-	TotalBooks  int       `json:"totalBooks"`
-	DiffBook    int       `json:"diffBooks"`
-	TotalUsers  int       `json:"totalUsers"`
-	IssuedBook  int       `json:"issuedBook"`
-	Books       []Book    `json:"books"`
-	Requests    []Request `json:"request"`
-	Issued      []Request `json:"issued"`
-	UserRequest []Request `json:"userRequest"`
+	TotalBooks    int       `json:"totalBooks"`
+	DifferentBook int       `json:"differentBooks"`
+	TotalUsers    int       `json:"totalUsers"`
+	IssuedBook    int       `json:"issuedBook"`
+	Books         []Book    `json:"books"`
+	Requests      []Request `json:"request"`
+	IssuedAmount  []Request `json:"issuedAmount"`
+	UserRequest   []Request `json:"userRequest"`
 }
 
 type ListRequest struct {

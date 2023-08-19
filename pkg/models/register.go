@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	"lms/pkg/utils"
 
 	"github.com/tawesoft/golib/v2/dialog"
@@ -10,27 +9,28 @@ import (
 func Register(username, password string) error {
 	db, err := Connection()
 	if err != nil {
-		fmt.Println(("Database not connected"))
 		return err
 	}
 
 	var userExist int
-	err = db.QueryRow("Select Count(*) from user where Uname=?", username).Scan(&userExist)
+	err = db.QueryRow("Select Count(*) from user where Username=?", username).Scan(&userExist)
 
 	if err != nil {
-		fmt.Println("Error in retrieving data from User table")
 		return err
 	}
 	if userExist != 0 {
 		dialog.Alert("Username already exist")
-		return err
+		return nil
 	}
-	hashedPwd := utils.Hash(password)
-
-	_, err = db.Exec("Insert into user (Uname, hash, admin) Values (?,?,0)", username, hashedPwd)
+	hashedPassword, err := utils.Hash(password)
 
 	if err != nil {
-		fmt.Println("Inserting values into user table failed")
+		return err
+	}
+
+	_, err = db.Exec("Insert into user (Username, hash, admin) Values (?,?,0)", username, hashedPassword)
+
+	if err != nil {
 		return err
 	}
 	return nil

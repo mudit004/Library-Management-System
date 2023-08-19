@@ -11,7 +11,18 @@ func Browse(writer http.ResponseWriter, request *http.Request) {
 	t := views.LoginPage("Browse")
 	writer.WriteHeader(http.StatusOK)
 
-	formData := models.FetchBook(utils.GetUID(writer, request))
+	userID, err := utils.GetUserID(writer, request)
+	if err != nil {
+		http.Redirect(writer, request, "/internalServerError", http.StatusSeeOther)
+		return
+
+	}
+	formData, err := models.FetchBook(userID)
+	if err != nil {
+		http.Redirect(writer, request, "/internalServerError", http.StatusSeeOther)
+		return
+
+	}
 	t.Execute(writer, formData)
 }
 
@@ -22,8 +33,18 @@ func RequestBookLoader(writer http.ResponseWriter, request *http.Request) {
 	} else {
 		t := views.LoginPage("requestBook")
 		writer.WriteHeader(http.StatusOK)
+		userID, err := utils.GetUserID(writer, request)
+		if err != nil {
+			http.Redirect(writer, request, "/internalServerError", http.StatusSeeOther)
+			return
 
-		formData := models.FetchBook(utils.GetUID(writer, request))
+		}
+		formData, err := models.FetchBook(userID)
+		if err != nil {
+			http.Redirect(writer, request, "/internalServerError", http.StatusSeeOther)
+			return
+
+		}
 		t.Execute(writer, formData)
 
 	}
@@ -37,7 +58,18 @@ func ReturnBookLoader(writer http.ResponseWriter, request *http.Request) {
 	} else {
 		t := views.LoginPage("returnBook")
 		writer.WriteHeader(http.StatusOK)
-		formData := models.FetchBook(utils.GetUID(writer, request))
+		userID, err := utils.GetUserID(writer, request)
+		if err != nil {
+			http.Redirect(writer, request, "/internalServerError", http.StatusSeeOther)
+			return
+
+		}
+		formData, err := models.FetchBook(userID)
+		if err != nil {
+			http.Redirect(writer, request, "/internalServerError", http.StatusSeeOther)
+			return
+
+		}
 		t.Execute(writer, formData)
 
 	}
@@ -51,8 +83,18 @@ func PendingRequestLoader(writer http.ResponseWriter, request *http.Request) {
 	} else {
 		t := views.LoginPage("requestPending")
 		writer.WriteHeader(http.StatusOK)
+		userID, err := utils.GetUserID(writer, request)
+		if err != nil {
+			http.Redirect(writer, request, "/internalServerError", http.StatusSeeOther)
+			return
 
-		formData := models.FetchBook(utils.GetUID(writer, request))
+		}
+		formData, err := models.FetchBook(userID)
+		if err != nil {
+			http.Redirect(writer, request, "/internalServerError", http.StatusSeeOther)
+			return
+
+		}
 		t.Execute(writer, formData)
 
 	}

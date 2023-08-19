@@ -30,7 +30,17 @@ func AddBookPage(writer http.ResponseWriter, request *http.Request) {
 	if IsAdmin(writer, request) {
 		t := views.LoginPage("Books")
 		writer.WriteHeader(http.StatusOK)
-		formData := models.FetchBook(utils.GetUID(writer, request))
+		userID, err := utils.GetUserID(writer, request)
+		if err != nil {
+			http.Redirect(writer, request, "/internalServerError", http.StatusSeeOther)
+			return
+
+		}
+		formData, err := models.FetchBook(userID)
+		if err != nil {
+			http.Redirect(writer, request, "/internalServerError", http.StatusSeeOther)
+			return
+		}
 		t.Execute(writer, formData)
 	} else {
 		Logout(writer, request)
@@ -42,7 +52,17 @@ func RequestManagementPage(writer http.ResponseWriter, request *http.Request) {
 	if IsAdmin(writer, request) {
 		t := views.LoginPage("request")
 		writer.WriteHeader(http.StatusOK)
-		formData := models.FetchBook(utils.GetUID(writer, request))
+		userID, err := utils.GetUserID(writer, request)
+		if err != nil {
+			http.Redirect(writer, request, "/internalServerError", http.StatusSeeOther)
+			return
+
+		}
+		formData, err := models.FetchBook(userID)
+		if err != nil {
+			http.Redirect(writer, request, "/internalServerError", http.StatusSeeOther)
+			return
+		}
 		t.Execute(writer, formData)
 	} else {
 		Logout(writer, request)

@@ -5,24 +5,21 @@ import (
 	"net/http"
 )
 
-func GetUID(w http.ResponseWriter, r *http.Request) interface{} {
+func GetUserID(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	if r.Method == http.MethodGet {
 		cookie, err := r.Cookie("access-token")
 		if err != nil {
-			fmt.Println("Cookie Does Not Exist")
-			return nil
+			return nil, err
 		} else {
 			token := cookie.Value
 			claims, err := DecodeJWT(token)
 			if err != nil {
-				fmt.Println("Error in decoding")
-				return nil
+				return nil, err
 			} else {
-				UID := claims["UID"]
-				fmt.Println(UID)
-				return UID
+				UserID := claims["UserID"]
+				return UserID, nil
 			}
 		}
 	}
-	return nil
+	return nil, fmt.Errorf("request not found")
 }

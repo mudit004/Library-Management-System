@@ -11,10 +11,10 @@ import (
 	"golang.org/x/exp/slices"
 )
 
-func NewJWT(user types.User) string {
+func NewJWT(user types.User) (string, error) {
 	config, err := NewConfig("config.yaml")
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
 	key := []byte(config.JWT_SECRET_KEY)
@@ -22,24 +22,24 @@ func NewJWT(user types.User) string {
 	token := jwt.New(jwt.SigningMethodHS256)
 	claims := token.Claims.(jwt.MapClaims)
 
-	claims["user"] = user.UName
-	claims["UID"] = user.UID
+	claims["user"] = user.UserName
+	claims["UserID"] = user.UserID
 	claims["admin"] = user.Admin
 	claims["exp"] = time.Now().Add(time.Hour * 48).Unix()
 
 	tokenStr, err := token.SignedString(key)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
-	return tokenStr
+	return tokenStr, nil
 
 }
 
 func DecodeJWT(tokenStr string) (jwt.MapClaims, error) {
 	config, err := NewConfig("config.yaml")
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	key := []byte(config.JWT_SECRET_KEY)
@@ -78,11 +78,9 @@ func ValidateJWT(next http.Handler) http.Handler {
 
 		cookie, err := r.Cookie("access-token")
 		if err == nil {
-			// Cookie exists
 			token := cookie.Value
-			claims, err := DecodeJWT(token)
+			_, err := DecodeJWT(token)
 			if err != nil {
-				fmt.Println(claims)
 				http.Redirect(w, r, "/", http.StatusSeeOther)
 			}
 

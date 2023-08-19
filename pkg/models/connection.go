@@ -20,7 +20,7 @@ func NewConfig(path string) (*types.Config, error) {
 	config := &types.Config{}
 
 	//open config file
-	file, err := os.Open(path)	
+	file, err := os.Open(path)
 	if err != nil {
 		return nil, err
 	}
@@ -36,7 +36,7 @@ func NewConfig(path string) (*types.Config, error) {
 }
 
 func dsn(config *types.Config) string {
-	return fmt.Sprintf("%s:%s@tcp(%s)/%s", config.UNAME, config.Pwd, config.Host, config.DB)
+	return fmt.Sprintf("%s:%s@tcp(%s)/%s", config.UserNAME, config.Password, config.Host, config.DB)
 }
 
 func Connection() (*sql.DB, error) {

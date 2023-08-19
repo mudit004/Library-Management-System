@@ -8,7 +8,7 @@ import (
 )
 
 func RequestExists(db *sql.DB, UserID interface{}, BookID int) (bool, error) {
-	query := "SELECT COUNT(*) FROM request WHERE UID=? and BookID=? and status<>3"
+	query := "SELECT COUNT(*) FROM request WHERE UserID=? and BookID=? and status<>3"
 	var count int
 	err := db.QueryRow(query, UserID, BookID).Scan(&count)
 	if err != nil {
@@ -35,7 +35,7 @@ func RequestBook(UserID interface{}, BookID int) error {
 			return err
 		}
 		if !req {
-			_, err = db.Exec("Insert Into request (UID, BookID, status) Values (?, ?, 0)", UserID, BookID)
+			_, err = db.Exec("Insert Into request (UserID, BookID, status) Values (?, ?, 0)", UserID, BookID)
 			if err != nil {
 				return err
 			}
