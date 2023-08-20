@@ -13,4 +13,4 @@ script:
 	./scripts/script.sh
 
 
-.PHONY: all script
+.PHONY: all script virtualHosting

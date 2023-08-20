@@ -1,4 +1,4 @@
-# Library Management System (MVS)
+# Library Management System (MVC)
 
 ## It is a basic Library Management System build on MVC architecture
 
@@ -11,6 +11,6 @@
 ` (Replacing all variables according to .yaml file)
 5. If it shows error then first run `migrate -path database/migration/ -database "mysql://$DB_USERNAME:$DB_PASSWORD@tcp($DB_HOST)/$DB_NAME" force <VERSION>
 ` then again run previous command.
-6. run `make all` to setup virtual hosting.
+6. run `make virtualHosting` to setup virtual hosting.
 7. run `make goSetup` to get all dependencies install
 8. run `go script` to start the server
